@@ -165,10 +165,9 @@ export function create(
   const defaultPostContentType =
     config?.defaultPostContentType ?? 'application/x-www-form-urlencoded';
 
-  const handleCookies =
+  const handleCookies = !(
     config?.handleCookies !== undefined && config?.handleCookies === false
-      ? false
-      : true;
+  );
 
   const store = new Map<string, CookieOptions>();
   const instance = axios.create(config) as ExtendedAxiosInstance;
