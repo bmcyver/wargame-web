@@ -1,8 +1,5 @@
 export {};
 
-/**
- * Augment the `String` object with additional properties.
- */
 declare global {
   interface StringConstructor {
     whitespace: string;

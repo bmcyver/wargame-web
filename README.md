@@ -1,31 +1,39 @@
-# Wargame utils for webhacking
+# Wargame utils for web hacking
 
-Based on axios. Cookie is automatically handled.
-
-And it has some useful functions like logger, hashes, random string, etc.
+Based on Got. Cookie is automatically handled.
+And it has some useful functions for web hacking.
 
 ## Installation
+
 ```bash
 pnpm install
 ```
 
 ## Usage
+
 ```ts
-import { create, server } from '@web';
-import { logger } from '@utils';
+import { Logger } from '@utils';
+import { request, server } from '@web';
 
-const r = create({ // based on axios instance
-    baseURL: '<url>',
-    ignoreHttpErrors: true,
-    DEBUG: true,
+Logger.setLevel('DEBUG');
+
+const s = server().listen(3000);
+s.get('/', (req, res) => res.redirect(301, '/test'));
+s.get('/test', (req, res) => {
+  res.setHeader('X-TEST', 'test').sendStatus(200);
 });
 
-const app = server({ // create express app with useful functions
-  DEBUG: true,
-  enableErrorHandler: true,
-}).listen(3000);
-
-app.get('/', async (req, res) => {
-  logger.info('GET /');
+const r = request({
+  prefixUrl: 'http://localhost:3000',
 });
+
+r.setHeader('X-TEST', 'test');
+r.setCookie('test', 'test');
+
+await r.get('').text();
+
+Logger.debug('debug');
+Logger.info('info');
+Logger.success('success');
+Logger.error('error');
 ```
