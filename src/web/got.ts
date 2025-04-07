@@ -45,14 +45,14 @@ export function request(opts: ExtendOptions) {
     hooks: {
       beforeRequest: [
         (options) => {
+          headerStorage.forEach((value, key) => {
+            options.headers[key] = value;
+          });
           if (cookieStorage.size > 0) {
             options.headers['cookie'] = Array.from(cookieStorage.entries())
               .map(([key, value]) => serialize(key, value))
               .join('; ');
           }
-          headerStorage.forEach((value, key) => {
-            options.headers[key] = value;
-          });
         },
       ],
       beforeRedirect: [
